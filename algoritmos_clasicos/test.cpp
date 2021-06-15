@@ -3,63 +3,77 @@
 #include <random>
 
 #include "algoritmos.h"
+#include "cronometro.h"
+
+template <typename T>
+double test_algoritmos(T inicio, T fin, uint8_t eleccion)
+{
+	Cronometro C;
+	long int r = 0;
+	const double error_absoluto = 0.01; 
+	const double error_relativo = 0.001; // Error relativo aceptado
+
+	C.activar();
+
+	do
+	{
+		switch (eleccion)
+		{
+		case 0:
+			std::random_shuffle(inicio, fin);
+			ordenacion_seleccion_directa(inicio, fin);
+			break;
+		case 1:
+			std::random_shuffle(inicio, fin);
+			ordenacion_intercambio_directo(inicio, fin);
+			break;
+		case 2:
+			std::random_shuffle(inicio, fin);
+			ordenacion_insercion_directa(inicio, fin);
+			break;
+		default:
+			break;
+		}
+		++r;
+	} while (C.tiempo() < (error_absoluto / (error_relativo + error_absoluto)));
+
+	C.parar();
+	double t = C.tiempo() / r;
+
+	return t;
+}
 
 int main()
 {
-	std::vector<int> v = { 1,2,3,4,5,6,7 };
-	int x = 3;
+	enum algoritmo { SELECCION, INTERCAMBIO, INSERCION };
 
-	size_t posicion = busqueda_secuencial(v.begin(), x, v.size());
-	std::cout << "Encontrado en posicion: " << posicion << std::endl;
+	const int N = 20000;  
+	const int INCR = 1000;
 
-	char *c = _strdup("Hola");
-	char cc = 'b';
+	std::vector<int> v;
+	for (size_t i = 0; i < N; i++) v[i] = i; // Hacer push_back es la ineficiencia personificada
 
-	size_t posicion1 = busqueda_secuencial(c, cc, 12);
-	std::cout << "Encontrado en posicion: " << posicion1 << std::endl;
+	double t1, t2, t3; // Almacenan los tiempos
 
-	std::vector<int> vv{ 0, 1, 3, 4, 5, 6, 9 };
-	std::random_shuffle(vv.begin(), vv.end());
-	std::cout << "Vector desordenado" << std::endl;
-	for ( auto x : vv )
-		std::cout << x << ", ";
-	std::cout << "\n";
-	
-	ordenacion_intercambio_directo(vv.begin(), vv.end());
+	int* v2 = (int*)malloc(N * sizeof(int));
 
-	std::cout << "Ordenacion por intercambio" << std::endl;
-	for ( auto x : vv )
-		std::cout << x << ", ";
-	std::cout << "\n";
+	for (int i = 0; i < N; i++) v2[i] = i;
 
-	std::vector<int> v1{ 10, 1, 3, 4, 5, 6, 9 };
-	std::random_shuffle(v1.begin(), v1.end());
-	std::cout << "Vector desordenando" << std::endl;
-	for (auto x : v1)
-		std::cout << x << ", ";
-	std::cout << "\n";
-
-	ordenacion_seleccion_directa(v1.begin(), v1.end());
-
-	std::cout << "Ordenacion por seleccion directa" << std::endl;
-	for (auto x : v1)
-		std::cout << x << ", ";
-	std::cout << "\n";
-
-	std::vector<int> v2{ 19, 2, 3, 4, 5, 6, 1 };
-	std::random_shuffle(v2.begin(), v2.end());
-	std::cout << "Vector desordenando" << std::endl;
-	for (auto x : v2)
-		std::cout << x << ", ";
-	std::cout << "\n";
-
-	ordenacion_insercion_directa(v2.begin(), v2.end());
-
-	std::cout << "Ordenacion por insercion directa" << std::endl;
-	for (auto x : v2)
-		std::cout << x << ", ";
-	std::cout << "\n";
-
+	for (int i = INCR; i <= N; i += INCR )
+	{
+		t1 = test_algoritmos(v2, v2 + i, algoritmo::SELECCION);
+		std::cout << "Seleccion   "<< i << " " << t1 << std::endl;
+		t2 = test_algoritmos(v2, v2 + i, algoritmo::INSERCION);
+		std::cout << "Insercion   "<< i << " " << t2 << std::endl;
+		t3 = test_algoritmos(v2, v2 + i, algoritmo::INTERCAMBIO);
+		std::cout << "Intercambio "<< i << " " << t3 << std::endl;
+	}
+	std::cout << "SELECCION"   << std::endl;
+	std::cout << t1			   << std::endl;
+	std::cout << "INSERCION"   << std::endl;
+	std::cout << t2			   << std::endl;
+	std::cout << "INTERCAMBIO" << std::endl;
+	std::cout << t3            << std::endl;
 
 	return EXIT_SUCCESS;
 }
