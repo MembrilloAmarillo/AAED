@@ -1,5 +1,5 @@
-CC     = clang++
-CFLAGS = -Wall -Wextra -pedantic
+CC     = g++
+CXXFLAGS = -Wall -Wextra -pedantic
 
 SRCDIR = .
 SRC    = test.cpp
@@ -9,12 +9,10 @@ OBJ    = test.o
 
 OUT = test
 
-.SUFFIXES: .c .o
-.c.o:
-	${CC} -c $< ${CLFAGS} $(CPPFLAGS} -o $@
-
 ${OUT} : ${OBJ}
-	${CC} -o ${OUT} ${CFLAGS} ${CPPFLAGS} ${OBJ}
+	${CC} -o ${OUT} ${CXXFLAGS} ${OBJ}
+
+test.o : algoritmos.h cronometro.h
 
 .PHONY: clean
 clean:
