@@ -46,12 +46,36 @@ double test_algoritmos(T inicio, T fin, uint8_t eleccion)
 	return t;
 }
 
-int main()
+int main( int argc, char **argv )
 {
 	enum algoritmo { SELECCION, INTERCAMBIO, INSERCION };
 
-	const int N = 20000;  
-	const int INCR = 1000;
+	int N    { 20000 };  
+	int INCR { 1000  };
+
+	if ( argc == 3 )
+	{
+		N    = atoi( argv[1] );
+		INCR = atoi( argv[2] );
+	}
+	else if ( argc > 3 )
+	{
+		std::cerr << "Demasiados argumentos" << std::endl;
+		return EXIT_FAILURE;
+	}
+	else
+	{
+		std::cout << "Argumentos por defecto: " << std::endl;
+	}
+
+	if ( ( INCR > N ) or ( N % INCR != 0 ) )
+	{
+		std::cerr << "N debe ser divisible por INCR" << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	std::cout << "N:    " << N    << std::endl;
+	std::cout << "INCR: " << INCR << std::endl;
 
 	double t1, t2, t3; // Almacenan los tiempos
 
