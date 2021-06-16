@@ -1,6 +1,8 @@
 #ifndef _ALGORITMOS_HPP_
 #define _ALGORITMOS_HPP_
 
+#include <cstddef>
+
 /* 
  * Busqueda Secuencial
  * Definicion -> Sea V un conjunto, y un x de V el elemento a buscar y 

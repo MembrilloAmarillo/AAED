@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <algorithm>
 
 #include "algoritmos.h"
 #include "cronometro.h"
@@ -38,6 +39,8 @@ double test_algoritmos(T inicio, T fin, uint8_t eleccion)
 	} while (C.tiempo() < (error_absoluto / (error_relativo + error_absoluto)));
 
 	C.parar();
+
+	/* Tiempo medio */
 	double t = C.tiempo() / r;
 
 	return t;
@@ -50,9 +53,6 @@ int main()
 	const int N = 20000;  
 	const int INCR = 1000;
 
-	std::vector<int> v;
-	for (size_t i = 0; i < N; i++) v[i] = i; // Hacer push_back es la ineficiencia personificada
-
 	double t1, t2, t3; // Almacenan los tiempos
 
 	int* v2 = (int*)malloc(N * sizeof(int));
@@ -61,6 +61,7 @@ int main()
 
 	for (int i = INCR; i <= N; i += INCR )
 	{
+		/* Llamada con cada una de los algoritmos de insercion */
 		t1 = test_algoritmos(v2, v2 + i, algoritmo::SELECCION);
 		std::cout << "Seleccion   "<< i << " " << t1 << std::endl;
 		t2 = test_algoritmos(v2, v2 + i, algoritmo::INSERCION);
