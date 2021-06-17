@@ -80,6 +80,8 @@ int main( int argc, char **argv )
 	double t1, t2, t3; // Almacenan los tiempos
 
 	int* v2 = (int*)malloc(N * sizeof(int));
+	//std::vector<int> v2;
+	//v2.reserve(N);
 
 	for (int i = 0; i < N; i++) v2[i] = i;
 

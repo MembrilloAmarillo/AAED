@@ -1,5 +1,16 @@
-CC     = g++
-CXXFLAGS = -Wall -Wextra -pedantic
+CC        = g++
+CXXFLAGS += -Wall -Wextra -pedantic
+
+debug = 0
+optimiza = 0
+
+ifeq ($(debug),1)
+	CXXFLAGS += -g
+endif
+
+ifeq ($(optimiza),2)
+	CXXFLAGS += -O2
+endif
 
 SRCDIR = .
 SRC    = test.cpp
