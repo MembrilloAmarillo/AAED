@@ -1,5 +1,5 @@
-#ifndef _Lista_HPP_
-#define _Lista_HPP_
+#ifndef _LISTA_DOBLE_HPP_
+#define _LISTA_DOBLE_HPP_
 
 #include <cassert>
 
@@ -18,7 +18,7 @@ public:
     void eliminar( posicion );
 
     T& elemento(posicion p);
-	/* Funciones no modificadoras/observadoras */
+    /* Funciones no modificadoras/observadoras */
     const T& elemento ( posicion ) const;
     posicion buscar   ( const T& ) const;
     posicion siguiente( posicion ) const;
