@@ -18,8 +18,21 @@ class FuncEscalonada {
         inicio( ini ), fin( fini ) {}
     };
     Lista<escalon> escalones;
+
+    bool se_interponen( escalon a, escalon b )
+    {
+      if ( a.inicio >= b.inicio && a.inicio <= b.fin ) {
+        return true;
+      } else if ( a.inicio <= b.inicio && a.fin >= b.fin ) {
+        return true;
+      } else if ( a.fin >= b.inicio ) {
+        return true;
+      } else {
+        return false;
+      }
+    }
   public:
-    typedef escalon escalon;
+    typedef escalon _escalon;
 
     FuncEscalonada( float x, float y ) {
       escalon esc { x, y };
@@ -27,6 +40,17 @@ class FuncEscalonada {
     }
 
     /* Metodos */
+
+    void insertar( escalon esc ) 
+    {
+      auto pos = escalones.primera();
+      for( ; pos != escalones.fin(); pos = escalones.siguiente( pos ) ) {
+        if( se_interponen( escalones.elemento( pos ), esc ) ) {
+          escalones.eliminar( pos );
+        }
+      }
+      escalones.insertar( esc, escalones.fin() );
+    }
 
     friend std::ostream& operator <<( std::ostream& os, const FuncEscalonada& FE );
     ~FuncEscalonada() {}
@@ -46,6 +70,13 @@ std::ostream& operator <<( std::ostream& os, const FuncEscalonada& FE ) {
 int main( void ) 
 {
   FuncEscalonada F{1,1};
+
+  FuncEscalonada::_escalon esc {3, 4};
+
+  F.insertar(esc);
+  F.insertar({0,2});
+  F.insertar({-1, 5});
+  F.insertar({3, 4});
 
   std::cout << F;
 

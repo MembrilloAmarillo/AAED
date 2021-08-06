@@ -18,15 +18,12 @@ TARGET = ${BUILD_DIR}/tad_escalonada
 all: ${TARGET}
 
 ${TARGET} : ${OBJ}
+	mkdir -p ${BUILD_DIR}
 	${CC} -g -o $@ $^ ${CXXFLAGS} 
 
-${OBJ_DIR}/%.o : %.cpp
+${OBJ_DIR}/%.o : %.cpp 
+	mkdir -p ${OBJ_DIR}
 	${CC} -g -c -o $@ $< ${CXXFLAGS}
-
-${BUILD_DIR}:
-	mkdir $@
-${OBJ_DIR}:
-	mkdir $@
 	
 .PHONY : clean
 
