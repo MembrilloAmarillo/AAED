@@ -62,17 +62,13 @@ public:
 
 template <typename T>
 inline cola<T>::cola():
-	fin_cola(nullptr),
-	inicio_cola(nullptr)
-{
-	std::cout << "Constructor called\n";
-}
+	inicio_cola(nullptr),
+	fin_cola(nullptr)
+{ }
 
 template <typename T>
-inline cola<T>::cola(const cola<T>& bc)
-{
-	cout << "Llamado a constructor de copia" << endl;
-}
+inline cola<T>::cola(const cola<T>& )
+{ }
 
 template <typename T>
 inline void cola<T>::copy(const cola<T>& c)
@@ -154,8 +150,6 @@ inline cola<T>::~cola()
 		inicio_cola = p;	 /// La nueva entrada se convierte en el siguiente
 	}
 	fin_cola = nullptr;
-	std::cout << "Destructor called\n";
-
 }
 
 #endif
