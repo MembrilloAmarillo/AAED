@@ -7,10 +7,10 @@
 
 using namespace std;
 
-/// Implementacion de cola dinamica
+/// Implementacion de Cola dinamica
 
 template <class T>
-class cola 
+class Cola 
 {
 private:
 	struct node 
@@ -25,72 +25,72 @@ private:
 		{}
 	};	
 
-	/// inicio_cola: inicio de la cola, donde se encuentra el primer elemento
-	/// fin_cola : fin de la cola, donde se encuentra el ultimo elemento introducido
-	node *inicio_cola, *fin_cola;
+	/// inicio_Cola: inicio de la Cola, donde se encuentra el primer elemento
+	/// fin_Cola : fin de la Cola, donde se encuentra el ultimo elemento introducido
+	node *inicio_Cola, *fin_Cola;
 	
-	/// Copia de la pila actual en una nueva clase cola
-	void copy (const cola<T>& c);
+	/// Copia de la pila actual en una nueva clase Cola
+	void copy (const Cola<T>& c);
 public:
-	/// Crea una cola vacia
-	cola();
+	/// Crea una Cola vacia
+	Cola();
 	
-	/// Devuelve true si la cola esta vacia
+	/// Devuelve true si la Cola esta vacia
 	bool vacia () const;
 	
-	/// Precondicion: La cola no esta vacia
-	/// Postcondicion: Devuelve el elemento del fin_cola(output) de la cola
-	const T& return_output() const;
+	/// Precondicion: La Cola no esta vacia
+	/// Postcondicion: Devuelve el elemento del fin_Cola(output) de la Cola
+	const T& frente() const;
 	
-	/// Precondicion: La cola no esta vacia
-	/// Postcondicion: Elimina el elemento del fin_cola de la cola y el siguiente
+	/// Precondicion: La Cola no esta vacia
+	/// Postcondicion: Elimina el elemento del fin_Cola de la Cola y el siguiente
 	/// se convierete en el nuevo incio.
 	void pop ();
 
-	/// Postcondicion: Inserta el elemento x al inicio_cola(input) de la cola
+	/// Postcondicion: Inserta el elemento x al inicio_Cola(input) de la Cola
 	void push (const T& x);
 
 	/// Constructor de copia
-	cola (const cola <T>& c);
+	Cola (const Cola <T>& c);
 
-	/// Sobrecarga del operador = para la asignacion de colas
-	cola<T>& operator =(const cola<T>& c);
+	/// Sobrecarga del operador = para la asignacion de Colas
+	Cola<T>& operator =(const Cola<T>& c);
 
-	/// Destructor de la clase cola
-	~cola();
+	/// Destructor de la clase Cola
+	~Cola();
 };
 
 template <typename T>
-inline cola<T>::cola():
-	inicio_cola(nullptr),
-	fin_cola(nullptr)
+inline Cola<T>::Cola():
+	inicio_Cola(nullptr),
+	fin_Cola(nullptr)
 { }
 
 template <typename T>
-inline cola<T>::cola(const cola<T>& )
+inline Cola<T>::Cola(const Cola<T>& )
 { }
 
 template <typename T>
-inline void cola<T>::copy(const cola<T>& c)
+inline void Cola<T>::copy(const Cola<T>& c)
 {
 	/// Construimos los nodos de la nueva clase
-	fin_cola = inicio_cola = new node (c.inicio_cola->element);	
-	node *p = c.inicio_cola->next;
+	fin_Cola = inicio_Cola = new node (c.inicio_Cola->element);	
+	node *p = c.inicio_Cola->next;
 	while (p) {
-		fin_cola->next = new node(p->element);
-		fin_cola = fin_cola->next;
+		fin_Cola->next = new node(p->element);
+		fin_Cola = fin_Cola->next;
 		p = p->next;
 	}
 }
 
 template <typename T>
-inline cola<T>& cola<T>::operator =(const cola<T>& c)
+inline Cola<T>& Cola<T>::operator =(const Cola<T>& c)
 {
 	/// evitamos la autoasignacion
 	if (this != &c)
 	{	
-		/// vaciamos la cola actual
-		this->~cola();
+		/// vaciamos la Cola actual
+		this->~Cola();
 		/// Llamamos a la funcion copia
 		copy(c);
 	}
@@ -98,58 +98,58 @@ inline cola<T>& cola<T>::operator =(const cola<T>& c)
 }
 
 template <typename T>
-inline bool cola<T>::vacia() const 
+inline bool Cola<T>::vacia() const 
 {
-	return (inicio_cola == nullptr);
+	return (inicio_Cola == nullptr);
 }
 
 template <typename T>
-inline const T& cola<T>::return_output() const
+inline const T& Cola<T>::frente() const
 {
 	assert(!vacia());
-	return inicio_cola->element;
+	return inicio_Cola->element;
 }
 
 template <typename T>
-inline void cola<T>::pop()
+inline void Cola<T>::pop()
 {
 	assert(!vacia());
-	node *p = inicio_cola;
-	inicio_cola = p->next;
+	node *p = inicio_Cola;
+	inicio_Cola = p->next;
 
-	if (!inicio_cola) 
-		fin_cola = nullptr;
+	if (!inicio_Cola) 
+		fin_Cola = nullptr;
 	delete p;
 }
 
 template <typename T>
-inline void cola<T>::push (const T& x)
+inline void Cola<T>::push (const T& x)
 {
 	node *p = new node(x);
-	/// Si la cola esta vacia, la entrada es igual a la salida
-	if (inicio_cola == nullptr) {
-		/// En esta asignacion, fin_cola e inicio cola comparten el mismo puntero
-		fin_cola = inicio_cola = p;
+	/// Si la Cola esta vacia, la entrada es igual a la salida
+	if (inicio_Cola == nullptr) {
+		/// En esta asignacion, fin_Cola e inicio Cola comparten el mismo puntero
+		fin_Cola = inicio_Cola = p;
 	} else {
-		/// Introducimos nuevo elemento en la cola
-		/// Actualizamos el valor de fin_cola
-		fin_cola->next = p;
-		fin_cola = fin_cola->next;
+		/// Introducimos nuevo elemento en la Cola
+		/// Actualizamos el valor de fin_Cola
+		fin_Cola->next = p;
+		fin_Cola = fin_Cola->next;
 	}
 }
 
 template <typename T>
-inline cola<T>::~cola()
+inline Cola<T>::~Cola()
 {
 	node *p;
 	/// Mientras que exista una entrada, seguimos borrando elementos
-	while (inicio_cola)
+	while (inicio_Cola)
 	{
-		p = inicio_cola->next; /// Apuntamos al elemento detras del elemento del fin_cola
-		delete inicio_cola; 	 /// Ahora podemos borrar la entrada
-		inicio_cola = p;	 /// La nueva entrada se convierte en el siguiente
+		p = inicio_Cola->next; /// Apuntamos al elemento detras del elemento del fin_Cola
+		delete inicio_Cola; 	 /// Ahora podemos borrar la entrada
+		inicio_Cola = p;	 /// La nueva entrada se convierte en el siguiente
 	}
-	fin_cola = nullptr;
+	fin_Cola = nullptr;
 }
 
 #endif

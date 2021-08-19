@@ -4,10 +4,10 @@
 #include <cassert>
 
 template <typename T>
-class pila
+class Pila
 {
     private:
-        /* Struct encargado de almacenar la informacion de la pila */
+        /* Struct encargado de almacenar la informacion de la Pila */
         struct cell
         {
             /* data */
@@ -18,46 +18,46 @@ class pila
         };
 
         cell *top_cell;
-        /* Coge la pila actual y la copia en uno nuevo */
-        void copy(const pila<T>& p);
+        /* Coge la Pila actual y la copia en uno nuevo */
+        void copy(const Pila<T>& p);
     public:
-        // Constructor de pila
-        pila();
+        // Constructor de Pila
+        Pila();
         // Devuelve V si esta vacia, F en caso contrario
         bool vacia() const;
-        // Introduce nuevo elemento en la pila
+        // Introduce nuevo elemento en la Pila
         void push(const T& element);
         // Sobrecarga del operador =
-        pila<T>& operator = (const pila<T>& p);
+        Pila<T>& operator = (const Pila<T>& p);
         // Saca el ultimo elemento introducido
         void pop();
-        // Devuelve el elemento que se encuentra en el tope de la pila
-        const T& show_top() const;
-        // Destructor de pila
-        ~pila();
+        // Devuelve el elemento que se encuentra en el tope de la Pila
+        const T& tope() const;
+        // Destructor de Pila
+        ~Pila();
 };
 
 template <typename T>
-inline pila<T>::pila(): top_cell(nullptr) {}
+inline Pila<T>::Pila(): top_cell(nullptr) {}
 
 template <typename T>
-pila<T>& pila<T>::operator = (const pila<T>& p) {
+Pila<T>& Pila<T>::operator = (const Pila<T>& p) {
     // Evitamos autoasignacion
     if(this != *p){
-        // Vaciamos la pila en la que nos encontramos
-        this->~pila();
+        // Vaciamos la Pila en la que nos encontramos
+        this->~Pila();
         copy(p);
     }
     return *this;
 }
 
 template <typename T>
-void pila<T>::copy(const pila<T>& p) {
+void Pila<T>::copy(const Pila<T>& p) {
     // Copia la celda que se encuentra en el tope
-    top_cell = new cell(p.show_top(), nullptr);
-    // Recorrera la pila destino
+    top_cell = new cell(p.tope(), nullptr);
+    // Recorrera la Pila destino
     cell *destination = top_cell;
-    // Recorrera la pila origen
+    // Recorrera la Pila origen
     cell *source = p.top_cell->next;
     // Mientras que exista una siguiente celda, continuamos
     while(source->next) {
@@ -68,26 +68,26 @@ void pila<T>::copy(const pila<T>& p) {
 }
 
 template <typename T>
-inline bool pila<T>::vacia() const {
+inline bool Pila<T>::vacia() const {
     // Si hay celda, devuelve falso
     return (!top_cell); // top_cell == true, returns false, else true
 }
 
 template <typename T>
-inline const T& pila<T>::show_top() const {
-    // Nos aseguramos de que la pila no este vacia
+inline const T& Pila<T>::tope() const {
+    // Nos aseguramos de que la Pila no este vacia
     assert(!vacia()); // assert(vacia() == false)
     // Devolvemos el elemento del tope
     return top_cell->element;
 }
 
 template <typename T>
-inline void pila<T>::push(const T& element) {
+inline void Pila<T>::push(const T& element) {
     top_cell = new cell(element, top_cell);
 }
 
 template <typename T>
-inline void pila<T>::pop() {
+inline void Pila<T>::pop() {
     assert(!vacia());
     cell *temp = top_cell;
     top_cell = top_cell->next;
@@ -95,7 +95,7 @@ inline void pila<T>::pop() {
 }
 
 template <typename T>
-pila<T>::~pila() {
+Pila<T>::~Pila() {
     cell *p;
     while (top_cell) {
         p = top_cell->next;

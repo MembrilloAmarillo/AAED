@@ -34,14 +34,14 @@ private:
 	tElemento* elementos;
 	/* Tam del vector */
 	size_t Lmax;
-	/* Posicion del tope */
-	size_t tope;
+	/* Posicion del _tope */
+	int _tope;
 };
 
 template <typename T>
 Pila<T>::Pila( size_t TamMax ) :
 	Lmax(TamMax),
-	tope(-1),
+	_tope(-1),
 	elementos(new T[TamMax]) 
 { }
 
@@ -49,9 +49,9 @@ template <typename T>
 Pila<T>::Pila( const Pila& P ) :
 	elementos( new T[P.Lmax]),
 	Lmax( P.Lmax ),
-	tope( P.tope )
+	_tope( P._tope )
 {
-	for( size_t i = 0; i < tope; i++ )
+	for( size_t i = 0; i < _tope; i++ )
 	{
 		elementos[i] = P.elementos[i];
 	}
@@ -69,8 +69,8 @@ Pila<T>& Pila<T>::operator =( const Pila<T>& P )
 			Lmax = P.Lmax;
 			elementos = new T[Lmax];
 		}
-		tope = P.tope;
-		for ( size_t i = 0; i < tope; i++ )
+		_tope = P._tope;
+		for ( size_t i = 0; i < _tope; i++ )
 		{
 			elementos[i] = P.elementos[i];
 		}
@@ -81,35 +81,35 @@ Pila<T>& Pila<T>::operator =( const Pila<T>& P )
 template <typename T>
 inline bool Pila<T>::vacia() const
 {
-	return ( tope == -1 );
+	return ( _tope == -1 );
 }
 
 template <typename T>
 inline bool Pila<T>::llena() const
 {
-	return ( tope == Lmax - 1);
+	return ( _tope == Lmax - 1);
 }
 
 template <typename T>
 inline const T& Pila<T>::tope() const
 {
 	assert( !vacia() );
-	return elementos[tope];
+	return elementos[_tope];
 }
 
 template <typename T>
 inline void Pila<T>::pop()
 {
 	assert( !vacia() );
-	--tope;
+	--_tope;
 }
 
 template <typename T>
 inline void Pila<T>::push( const T& x )
 {
 	assert( !llena() );
-	++tope;
-	elementos[tope] = x;
+	++_tope;
+	elementos[_tope] = x;
 }
 
 template <typename T>

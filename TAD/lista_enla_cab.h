@@ -30,6 +30,9 @@ public:
 	posicion primera  (          ) const;
 	posicion fin      ( 		 ) const;
 
+
+   Lista<T>& operator +=(const Lista<T>& l); // Concatenacion
+
 	~Lista();
 
 private:
@@ -273,6 +276,21 @@ Lista<T>::~Lista()
 		delete L;
 		L = q;
 	}
+}
+
+// Concatenacion de listas (para recorridos)
+template<typename T>
+Lista<T>& Lista<T>::operator +=(const Lista<T>& L)
+{
+   for (Lista<T>::posicion i = L.primera(); i != L.fin(); i = L.siguiente(i))
+      insertar(L.elemento(i), fin());
+   return *this;
+}
+
+template<typename T>
+Lista<T> operator +(const Lista<T>& L1, const Lista<T>& L2)
+{
+   return Lista<T>(L1) += L2;
 }
 
 #endif
