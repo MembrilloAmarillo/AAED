@@ -7,10 +7,10 @@
 
 using namespace std;
 
-/// Implementacion de Cola dinamica
+/// Implementacion de Queue dinamica
 
 template <class T>
-class Cola 
+class Queue 
 {
 private:
 	struct node 
@@ -25,72 +25,72 @@ private:
 		{}
 	};	
 
-	/// inicio_Cola: inicio de la Cola, donde se encuentra el primer elemento
-	/// fin_Cola : fin de la Cola, donde se encuentra el ultimo elemento introducido
-	node *inicio_Cola, *fin_Cola;
+	/// start: inicio de la Queue, donde se encuentra el primer elemento
+	/// end : fin de la Queue, donde se encuentra el ultimo elemento introducido
+	node *start, *end;
 	
-	/// Copia de la pila actual en una nueva clase Cola
-	void copy (const Cola<T>& c);
+	/// Copia de la pila actual en una nueva clase Queue
+	void copy (const Queue<T>& c);
 public:
-	/// Crea una Cola vacia
-	Cola();
+	/// Crea una Queue empty
+	Queue();
 	
-	/// Devuelve true si la Cola esta vacia
-	bool vacia () const;
+	/// Devuelve true si la Queue esta empty
+	bool empty () const;
 	
-	/// Precondicion: La Cola no esta vacia
-	/// Postcondicion: Devuelve el elemento del fin_Cola(output) de la Cola
-	const T& frente() const;
+	/// Precondicion: La Queue no esta empty
+	/// Postcondicion: Devuelve el elemento del end(output) de la Queue
+	const T& top() const;
 	
-	/// Precondicion: La Cola no esta vacia
-	/// Postcondicion: Elimina el elemento del fin_Cola de la Cola y el siguiente
+	/// Precondicion: La Queue no esta empty
+	/// Postcondicion: Elimina el elemento del end de la Queue y el siguiente
 	/// se convierete en el nuevo incio.
 	void pop ();
 
-	/// Postcondicion: Inserta el elemento x al inicio_Cola(input) de la Cola
+	/// Postcondicion: Inserta el elemento x al start(input) de la Queue
 	void push (const T& x);
 
 	/// Constructor de copia
-	Cola (const Cola <T>& c);
+	Queue (const Queue <T>& c);
+  
+	/// Sobrecarga del operador = para la asignacion de Queues
+	Queue<T>& operator =(const Queue<T>& c);
 
-	/// Sobrecarga del operador = para la asignacion de Colas
-	Cola<T>& operator =(const Cola<T>& c);
-
-	/// Destructor de la clase Cola
-	~Cola();
+	/// Destructor de la clase Queue
+	~Queue();
 };
 
 template <typename T>
-inline Cola<T>::Cola():
-	inicio_Cola(nullptr),
-	fin_Cola(nullptr)
+inline Queue<T>::Queue():
+	start(nullptr),
+	end(nullptr)
 { }
 
 template <typename T>
-inline Cola<T>::Cola(const Cola<T>& )
+inline Queue<T>::Queue(const Queue<T>& )
 { }
 
 template <typename T>
-inline void Cola<T>::copy(const Cola<T>& c)
+inline void Queue<T>::copy(const Queue<T>& c)
 {
 	/// Construimos los nodos de la nueva clase
-	fin_Cola = inicio_Cola = new node (c.inicio_Cola->element);	
-	node *p = c.inicio_Cola->next;
+	end = start = new node (c.start->element);	
+	node *p = c.start->next;
 	while (p) {
-		fin_Cola->next = new node(p->element);
-		fin_Cola = fin_Cola->next;
+		end->next = new node(p->element);
+		end = end->next;
 		p = p->next;
 	}
 }
 
 template <typename T>
-inline Cola<T>& Cola<T>::operator =(const Cola<T>& c)
+inline Queue<T>& Queue<T>::operator =(const Queue<T>& c)
 {
 	/// evitamos la autoasignacion
 	if (this != &c)
 	{	
-		/// vaciamos la Cola actual
-		this->~Cola();
+		/// emptymos la Queue actual
+		this->~Queue();
 		/// Llamamos a la funcion copia
 		copy(c);
 	}
@@ -98,58 +98,58 @@ inline Cola<T>& Cola<T>::operator =(const Cola<T>& c)
 }
 
 template <typename T>
-inline bool Cola<T>::vacia() const 
+inline bool Queue<T>::empty() const 
 {
-	return (inicio_Cola == nullptr);
+	return (start == nullptr);
 }
 
 template <typename T>
-inline const T& Cola<T>::frente() const
+inline const T& Queue<T>::top() const
 {
-	assert(!vacia());
-	return inicio_Cola->element;
+	assert(!empty());
+	return start->element;
 }
 
 template <typename T>
-inline void Cola<T>::pop()
+inline void Queue<T>::pop()
 {
-	assert(!vacia());
-	node *p = inicio_Cola;
-	inicio_Cola = p->next;
+	assert(!empty());
+	node *p = start;
+	start = p->next;
 
-	if (!inicio_Cola) 
-		fin_Cola = nullptr;
+	if (!start) 
+		end = nullptr;
 	delete p;
 }
 
 template <typename T>
-inline void Cola<T>::push (const T& x)
+inline void Queue<T>::push (const T& x)
 {
 	node *p = new node(x);
-	/// Si la Cola esta vacia, la entrada es igual a la salida
-	if (inicio_Cola == nullptr) {
-		/// En esta asignacion, fin_Cola e inicio Cola comparten el mismo puntero
-		fin_Cola = inicio_Cola = p;
+	/// Si la Queue esta empty, la entrada es igual a la salida
+	if (start == nullptr) {
+		/// En esta asignacion, end e inicio Queue comparten el mismo puntero
+		end = start = p;
 	} else {
-		/// Introducimos nuevo elemento en la Cola
-		/// Actualizamos el valor de fin_Cola
-		fin_Cola->next = p;
-		fin_Cola = fin_Cola->next;
+		/// Introducimos nuevo elemento en la Queue
+		/// Actualizamos el valor de end
+		end->next = p;
+		end = end->next;
 	}
 }
 
 template <typename T>
-inline Cola<T>::~Cola()
+inline Queue<T>::~Queue()
 {
 	node *p;
 	/// Mientras que exista una entrada, seguimos borrando elementos
-	while (inicio_Cola)
+	while (start)
 	{
-		p = inicio_Cola->next; /// Apuntamos al elemento detras del elemento del fin_Cola
-		delete inicio_Cola; 	 /// Ahora podemos borrar la entrada
-		inicio_Cola = p;	 /// La nueva entrada se convierte en el siguiente
+		p = start->next; /// Apuntamos al elemento detras del elemento del end
+		delete start; 	 /// Ahora podemos borrar la entrada
+		start = p;	 /// La nueva entrada se convierte en el siguiente
 	}
-	fin_Cola = nullptr;
+	end = nullptr;
 }
 
 #endif

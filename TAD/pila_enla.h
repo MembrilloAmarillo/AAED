@@ -4,10 +4,10 @@
 #include <cassert>
 
 template <typename T>
-class Pila
+class Stack
 {
     private:
-        /* Struct encargado de almacenar la informacion de la Pila */
+        /* Struct encargado de almacenar la informacion de la Stack */
         struct cell
         {
             /* data */
@@ -18,46 +18,46 @@ class Pila
         };
 
         cell *top_cell;
-        /* Coge la Pila actual y la copia en uno nuevo */
-        void copy(const Pila<T>& p);
+        /* Coge la Stack actual y la copia en uno nuevo */
+        void copy(const Stack<T>& p);
     public:
-        // Constructor de Pila
-        Pila();
-        // Devuelve V si esta vacia, F en caso contrario
-        bool vacia() const;
-        // Introduce nuevo elemento en la Pila
+        // Constructor de Stack
+        Stack();
+        // Devuelve V si esta empty, F en caso contrario
+        bool empty() const;
+        // Introduce nuevo elemento en la Stack
         void push(const T& element);
         // Sobrecarga del operador =
-        Pila<T>& operator = (const Pila<T>& p);
+        Stack<T>& operator = (const Stack<T>& p);
         // Saca el ultimo elemento introducido
         void pop();
-        // Devuelve el elemento que se encuentra en el tope de la Pila
-        const T& tope() const;
-        // Destructor de Pila
-        ~Pila();
+        // Devuelve el elemento que se encuentra en el top de la Stack
+        const T& top() const;
+        // Destructor de Stack
+        ~Stack();
 };
 
 template <typename T>
-inline Pila<T>::Pila(): top_cell(nullptr) {}
+inline Stack<T>::Stack(): top_cell(nullptr) {}
 
 template <typename T>
-Pila<T>& Pila<T>::operator = (const Pila<T>& p) {
+Stack<T>& Stack<T>::operator = (const Stack<T>& p) {
     // Evitamos autoasignacion
     if(this != *p){
-        // Vaciamos la Pila en la que nos encontramos
-        this->~Pila();
+        // Emptymos la Stack en la que nos encontramos
+        this->~Stack();
         copy(p);
     }
     return *this;
 }
 
 template <typename T>
-void Pila<T>::copy(const Pila<T>& p) {
-    // Copia la celda que se encuentra en el tope
-    top_cell = new cell(p.tope(), nullptr);
-    // Recorrera la Pila destino
+void Stack<T>::copy(const Stack<T>& p) {
+    // Copia la celda que se encuentra en el top
+    top_cell = new cell(p.top(), nullptr);
+    // Recorrera la Stack destino
     cell *destination = top_cell;
-    // Recorrera la Pila origen
+    // Recorrera la Stack origen
     cell *source = p.top_cell->next;
     // Mientras que exista una siguiente celda, continuamos
     while(source->next) {
@@ -68,34 +68,34 @@ void Pila<T>::copy(const Pila<T>& p) {
 }
 
 template <typename T>
-inline bool Pila<T>::vacia() const {
+inline bool Stack<T>::empty() const {
     // Si hay celda, devuelve falso
     return (!top_cell); // top_cell == true, returns false, else true
 }
 
 template <typename T>
-inline const T& Pila<T>::tope() const {
-    // Nos aseguramos de que la Pila no este vacia
-    assert(!vacia()); // assert(vacia() == false)
-    // Devolvemos el elemento del tope
+inline const T& Stack<T>::top() const {
+    // Nos aseguramos de que la Stack no este empty
+    assert(!empty()); // assert(empty() == false)
+    // Devolvemos el elemento del top
     return top_cell->element;
 }
 
 template <typename T>
-inline void Pila<T>::push(const T& element) {
+inline void Stack<T>::push(const T& element) {
     top_cell = new cell(element, top_cell);
 }
 
 template <typename T>
-inline void Pila<T>::pop() {
-    assert(!vacia());
+inline void Stack<T>::pop() {
+    assert(!empty());
     cell *temp = top_cell;
     top_cell = top_cell->next;
     delete temp;
 }
 
 template <typename T>
-Pila<T>::~Pila() {
+Stack<T>::~Stack() {
     cell *p;
     while (top_cell) {
         p = top_cell->next;

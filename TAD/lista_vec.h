@@ -1,80 +1,80 @@
 #ifndef _LISTA_VEC_HPP_
-#define _LISTA_VEC_HPP_
+#deende _LISTA_VEC_HPP_
 
 template <class T>
-class Lista
+class List
 {
 public:
-	// Definimos la posicion de un elemento
-	typedef size_t posicion;
+	// Deendimos la position de un element
+	typedef size_t position;
 	// Constructor explicito
-	explicit Lista( size_t TamaMax );
+	explicit List( size_t TamaMax );
 	// Constructor de copia
-	Lista( const Lista<T>& );
+	List( const List<T>& );
 	// Sobrecarga del operador de asignacion
-	Lista<T>& operator =( const Lista<T>& );
+	List<T>& operator =( const List<T>& );
 	
-	void insertar( const T&, posicion );
-	void eliminar( posicion );
+	void insert ( const T&, position );
+	void erase  ( position );
 
-	// Funcion observadora. Devuelve el elemento de
-	// la posicion pasada por argumento
-	const T& elemento( posicion ) const;
-	// Sobrecarga de la funcion observadora elemento,
-	// para asignar un elemento a la posicion pasada
+	// Funcion observadora. Devuelve el element de
+	// la position pasada por argumento
+	const T& element ( position ) const;
+	// Sobrecarga de la funcion observadora element,
+	// para asignar un element a la position pasada
 	// por argumento
-	T& elemento( posicion );
+	T& element ( position );
 
-	posicion buscar   ( const T& ) const;
-	posicion siguiente( posicion ) const;
-	posicion anterior ( posicion ) const;
-	posicion primera  (          ) const;
-	//Devuelve la posicion despues del ultimo
-	posicion fin      (          ) const;
+	position search   ( const T& ) const;
+	position next     ( position ) const;
+	position previous ( position ) const;
+	position first    (          ) const;
+	//Devuelve la position despues del ultimo
+	position end      (          ) const;
 
-	~Lista(); 
+	~List(); 
 private:
-	T* elementos; // Vector de elementos de la lista
+	T* elements;  // Vector de elements de la lista
 	size_t Lmax;  // Tam del vector
 	size_t n;     // Longitud de la lista
 };
 
 template <class T>
-inline Lista<T>::Lista( size_t TamaMax ) :
-	elementos( new T[TamaMax] ),
+inline List<T>::List( size_t TamaMax ) :
+	elements( new T[TamaMax] ),
 	Lmax( TamaMax ),
 	n( 0 ) 
 {}
 
 template <class T>
-Lista<T>::Lista( const Lista<T>& L ) :
-	elementos( new T[L.Lmax] ),
+List<T>::List( const List<T>& L ) :
+	elements( new T[L.Lmax] ),
 	Lmax( T.Lmax ),
 	n( L.n )
 {
-	for ( Lista<T>::posicion = 0; p < n ; ++p )
+	for ( List<T>::position = 0; p < n ; ++p )
 	{
-		elementos[p] = L.elementos[p];
+		elements[p] = L.elements[p];
 	}
 }
 
 template <class T>
-Lista<T>& Lista<T>::operator =( const Lista<T>& L )
+List<T>& List<T>::operator =( const List<T>& L )
 {
 	// Evitamos autoasignacion
 	if ( this != &L )
 	{
 		if ( Lmax != L.Lmax )
 		{
-			delete[] elementos;
+			delete[] elements;
 			Lmax 	  = L.Lmax;
-			elementos = new T[Lmax];
+			elements = new T[Lmax];
 		}
 		n = L.n;
 
-		for ( Lista<T>::posicion p = 0; p < n; ++p )
+		for ( List<T>::position p = 0; p < n; ++p )
 		{
-			elementos[p] = L.elementos[p];
+			elements[p] = L.elements[p];
 		}
 	}
 
@@ -82,59 +82,59 @@ Lista<T>& Lista<T>::operator =( const Lista<T>& L )
 }
 
 template <class T>
-void Lista<T>::insertar( const T& x, Lista<T>::posicion p )
+void List<T>::insert( const T& x, List<T>::position p )
 {
 	assert( p >= 0 and p <= n );
 	assert( n < Lmax          );
 
-	// Se desplazan los elementos desde la posicion p, hasta 
-	// n - 1, a la siguiente posicion
-	for ( Lista<T>::posicion q = n; q > p; --q )
+	// Se desplazan los elements desde la position p, hasta 
+	// n - 1, a la next position
+	for ( List<T>::position q = n; q > p; --q )
 	{
-		elementos[q] = elementos[q-1];
+		elements[q] = elements[q-1];
 	}
 
-	elementos[p] = x;
+	elements[p] = x;
 	++n;
 }
 
 template <class T>
-void Lista<T>::eliminar( Lista<T>::posicion p )
+void List<T>::erase( List<T>::position p )
 {
 	assert( p >= 0 and p < n );
 	--n;
 
-	// Desplazamos los elementos desde p + 1 hasta n, a 
-	// la posicion anterior
-	for ( Lista<T>::posicion q = p; q < n; ++q )
+	// Desplazamos los elements desde p + 1 hasta n, a 
+	// la position previous
+	for ( List<T>::position q = p; q < n; ++q )
 	{
-		elementos[q] = elementos[q+1];
+		elements[q] = elements[q+1];
 	}
 }
 
 template <class T>
-inline const T& Lista<T>::elemento( Lista<T>::posicion p ) const
+inline const T& List<T>::element( List<T>::position p ) const
 {
 	assert( p >= and p < n );
-	return elementos[p];
+	return elements[p];
 }
 
 template <class T>
-inline T& Lista<T>::elemento( Lista<T>::posicion p )
+inline T& List<T>::element( List<T>::position p )
 {
 	assert( p >= 0 and p < n );
-	return elementos[p];
+	return elements[p];
 }
 
 template <class T>
-typename Lista<T>::posicion
-	Lista<T>::buscar( const T& x ) const
+typename List<T>::position
+	List<T>::search( const T& x ) const
 {
-	Lista<T>::posicion q = 0;
+	List<T>::position q = 0;
 	bool encontrado = false;
 	while ( q < n and !encontrado )
 	{
-		if ( elementos[q] == x )
+		if ( elements[q] == x )
 		{
 			encontrado = true;
 		}
@@ -147,37 +147,37 @@ typename Lista<T>::posicion
 }
 
 template <class T> 
-inline typename Lista<T>::posicion
-	Lista<T>::siguiente( Lista<T>::posicion p ) const
+inline typename List<T>::position
+	List<T>::next( List<T>::position p ) const
 {
 	assert( p >= and p < n );
 	return p + 1;
 }
 
 template <class T>
-typename Lista<T>::posicion
-	Lista<T>::anterior( Lista<T>::posicion p ) const
+typename List<T>::position
+	List<T>::previous( List<T>::position p ) const
 {
 	assert( p > 0 and p <= n );
 	return p - 1;
 }
 
 template <class T>
-inline typename Lista<T>::posicion Lista<T>::primera() const
+inline typename List<T>::position List<T>::first() const
 {
 	return 0;
 }
 
 template <class T>
-inline typename Lista<T>::posicion Lista<T>::fin() const
+inline typename List<T>::position List<T>::end() const
 {
 	return n;
 }
 
 template <class T>
-inline Lista<T>::~Lista()
+inline List<T>::~List()
 {
-	delete[] elementos;
+	delete[] elements;
 }
 
 

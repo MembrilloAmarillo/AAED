@@ -1,88 +1,88 @@
 #ifndef _LISTA_DOBLE_HPP_
-#define _LISTA_DOBLE_HPP_
+#deende _LISTA_DOBLE_HPP_
 
 #include <cassert>
 
 template <typename T>
-class Lista
+class List
 {
-    struct nodo;
+    struct node;
 public:
-    typedef nodo* posicion;
-    Lista(); //constructor
-    Lista(const Lista<T>& lis); //constructor de copia
+    typedef node* position;
+    List(); //constructor
+    List(const List<T>& lis); //constructor de copia
 
-    Lista<T>& operator =(const Lista<T>& lis);
+    List<T>& operator =(const List<T>& lis);
 
-    void insertar( const T&, posicion );
-    void eliminar( posicion );
+    void insert( const T&, position );
+    void erase( position );
 
-    T& elemento(posicion p);
+    T& element(position p);
     /* Funciones no modificadoras/observadoras */
-    const T& elemento ( posicion ) const;
-    posicion buscar   ( const T& ) const;
-    posicion siguiente( posicion ) const;
-    posicion anterior ( posicion ) const;
-    posicion primera  (          ) const;
-    posicion fin 	  ( 		 ) const;
+    const T& element  ( position ) const;
+    position search   ( const T& ) const;
+    position next     ( position ) const;
+    position previous ( position ) const;
+    position first    (          ) const;
+    position end 	  ( 		 ) const;
 
-   ~Lista();
+   ~List();
  private:
-    struct nodo{
+    struct node{
         T elem;
-        nodo *ant, *sig;
-        nodo( const T& e, nodo* a = nullptr, nodo* s = nullptr ) :
+        node *ant, *sig;
+        node( const T& e, node* a = nullptr, node* s = nullptr ) :
             elem( e ), ant( a ), sig( s ) {}
     };
-    nodo* L; 
-    void copiar( const Lista<T>& Lis );
+    node* L; 
+    void copy( const List<T>& Lis );
 };
 
 
 template <typename T>
-void Lista<T>::copiar( const Lista<T>& Lis )
+void List<T>::copy( const List<T>& Lis )
 {
-    L = new nodo( T() );
+    L = new node( T() );
     L->ant = L->sig = L;
-    for( nodo* q = lis.L->sig; q != lis.L; q = q->sig )
-        L->ant = L->ant->sig = new nodo( q->elto, L->ant, L );
+    for( node* q = lis.L->sig; q != lis.L; q = q->sig )
+        L->ant = L->ant->sig = new node( q->elto, L->ant, L );
 }
 
 template <typename T>
-inline Lista<T>::Lista() : L( new nodo( T() ) )
+inline List<T>::List() : L( new node( T() ) )
 {
     L->ant = L->sig = L;
 }
 
 template <typename T>
-inline Lista<T>::Lista( const Lista<T>& Lis )
+inline List<T>::List( const List<T>& Lis )
 {
-    copiar( Lis );
+    copy( Lis );
 }
 
 template <typename T>
-Lista<T>& Lista<T>::operator =( const Lista<T>& Lis )
+List<T>& List<T>::operator =( const List<T>& Lis )
 {
     if(this != &lis){
-        this->~Lista();
-        copiar( Lis );
+        this->~List();
+        copy( Lis );
     }
     return *this;
 }
 
 template <typename T>
-void Lista<T>::insertar( const T& x, Lista<T>::posicion p ) 
+void List<T>::insert( const T& x, List<T>::position p ) 
 {
-    p->sig = p->sig->ant = new nodo( x, p, p->sig );
+    p->sig = p->sig->ant = new node( x, p, p->sig );
 }
 
 template <typename T>
-inline void Lista<T>::eliminar( Lista<T>::posicion p )
+inline void List<T>::erase( List<T>::position p )
 {
-	/* p->sig no es final */
+	/* p->sig no es endal */
     assert( p->sig != L ); 
 
-    nodo* q 	= p->sig; 
+    node* q 	= p->sig; 
     p->sig  	= q->sig; 
     p->sig->ant = p;
 
@@ -90,7 +90,7 @@ inline void Lista<T>::eliminar( Lista<T>::posicion p )
 }
 
 template <typename T>
-inline T& Lista<T>::elemento( Lista<T>::posicion p )
+inline T& List<T>::element( List<T>::position p )
 {
     assert( p->sig != L );
 
@@ -98,9 +98,9 @@ inline T& Lista<T>::elemento( Lista<T>::posicion p )
 }
 
 template <typename T>
-typename Lista<T>::posicion Lista<T>::buscar( const T& x ) const
+typename List<T>::position List<T>::search( const T& x ) const
 {
-    nodo* q = L;
+    node* q = L;
     bool encontrado = false;
 
     while( q->sig != L and !encontrado )
@@ -118,7 +118,7 @@ typename Lista<T>::posicion Lista<T>::buscar( const T& x ) const
 }
 
 template <typename T>
-typename Lista<T>::posicion Lista<T>::siguiente( Lista<T>::posicion p ) const
+typename List<T>::position List<T>::next( List<T>::position p ) const
 {
     assert( p->sig != L );
 
@@ -126,30 +126,30 @@ typename Lista<T>::posicion Lista<T>::siguiente( Lista<T>::posicion p ) const
 }
 
 template <typename T>
-typename Lista<T>::posicion Lista<T>::anterior( Lista<T>::posicion p ) const
+typename List<T>::position List<T>::previous( List<T>::position p ) const
 {
-	/* Comprobamos que no pida la posicion anterior a la del nodo cabecera */
+	/* Comprobamos que no pida la position previous a la del node cabecera */
     assert(p->sig != L);
 
     return p->ant;
 }
 
 template <typename T>
-typename Lista<T>::posicion Lista<T>::primera() const
+typename List<T>::position List<T>::first() const
 {
     return L;
 }
 
 template <typename T>
-typename Lista<T>::posicion Lista<T>::fin() const
+typename List<T>::position List<T>::end() const
 {
     return L->ant;
 }
 
 template <typename T>
-Lista<T>::~Lista()
+List<T>::~List()
 {
-    nodo* q;
+    node* q;
 
     while( L->sig != L )
 	{
