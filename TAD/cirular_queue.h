@@ -5,7 +5,7 @@
 #include <iostream>
 
 template <typename T>
-class cola_circ 
+class circular_queue 
 {
 private:
     /// Vector que almacena los elementos de la cola circular
@@ -20,37 +20,37 @@ private:
     size_t start, end;
 public:
     /// Constructor, requiere constructor T()
-    explicit cola_circ(size_t size);
+    explicit circular_queue(size_t size);
 
     /// Ctor. de copia, requiere ctor. T()
-    cola_circ(const cola_circ<T>& c); 
+    circular_queue(const circular_queue<T>& c); 
 
     void pop();
 
     void push(const T& element);
 
     /// Asignacion requiere constructor T()
-    cola_circ<T>& operator =(const cola_circ<T>& c);
+    circular_queue<T>& operator =(const circular_queue<T>& c);
 
-    bool vacia() const;
+    bool empty() const;
 
-    bool llena() const;
+    bool full() const;
 
     const T& return_start() const;
 
-    ~cola_circ();
+    ~circular_queue();
 };
 
 template <typename T>
-cola_circ<T>::cola_circ(size_t size):
+circular_queue<T>::circular_queue(size_t size):
     max(size),
     start(0),
     end(0),
-    element_keeper(new T[size + 1]) /// +1 para detectar cola llena
+    element_keeper(new T[size + 1]) /// +1 para detectar cola full
 {}
 
 template <typename T>
-cola_circ<T>::cola_circ(const cola_circ<T>& c):
+circular_queue<T>::circular_queue(const circular_queue<T>& c):
     element_keeper(new T[c.max]),
     max(c.max),
     start(c.start),
@@ -64,7 +64,7 @@ cola_circ<T>::cola_circ(const cola_circ<T>& c):
 }
 
 template <typename T>
-cola_circ<T>& cola_circ<T>::operator =(const cola_circ<T>& c)
+circular_queue<T>& circular_queue<T>::operator =(const circular_queue<T>& c)
 {
     /// Evitamos la autoasignacion
     if (this != &c)
@@ -85,45 +85,45 @@ cola_circ<T>& cola_circ<T>::operator =(const cola_circ<T>& c)
 }
 
 template <typename T>
-inline bool cola_circ<T>::vacia() const
+inline bool circular_queue<T>::empty() const
 {
     return (start == end ? true : false);
 }
 
 template <typename T>
-inline bool cola_circ<T>::llena() const
+inline bool circular_queue<T>::full() const
 {
     return (end == max ? true : false);
 }
 
 template <typename T>
-inline const T& cola_circ<T>::return_start() const
+inline const T& circular_queue<T>::return_start() const
 {
-    assert(!vacia());
+    assert(!empty());
     return element_keeper[start];
 }
 
 /// Dado que al hacer pop eliminamos el primer elemento en cola, 
 /// este debe ser el start
 template <typename T>
-inline void cola_circ<T>::pop() 
+inline void circular_queue<T>::pop() 
 {
-    assert(!vacia());
+    assert(!empty());
     ++start;
 }
 
 /// Cuando hacemos 'push', introducimos un nuevo valor en cola,
 /// por tanto, empezamos desde end, asi, actualizamos su valor.
 template <typename T>
-inline void cola_circ<T>::push (const T& x) 
+inline void circular_queue<T>::push (const T& x) 
 {
-    assert(!llena());
+    assert(!full());
     element_keeper[end] = x;
     ++end;
 }
 
 template <typename T>
-inline cola_circ<T>::~cola_circ()
+inline circular_queue<T>::~circular_queue()
 {
     delete[] element_keeper;
 }

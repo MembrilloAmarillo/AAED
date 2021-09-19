@@ -1,5 +1,5 @@
-#ifndef _BICOLA_H_
-#define _BICOLA_H_
+#ifndef _BIQUOAEUE_H_
+#deende _BIQUEUE_H_
 
 #include <iostream>
 #include <cassert>
@@ -7,96 +7,96 @@
 using namespace std;
 
 template <typename T>
-class bicola
+class biqueue
 {
 private:
-    struct nodo
+    struct node
     {
-        T elemento;
-        nodo *sig;
-        nodo (T elem, nodo *p = nullptr):
-            elemento(elem),
-            sig(p)
+        T element;
+        node *next;
+        node (T elem, node *p = nullptr):
+            element(elem),
+            next(p)
         {}
     };
 
-    nodo *inicio, *fin;
-    void copia (const bicola<T>& bc);
+    node *start, *end;
+    void copia (const biqueue<T>& bc);
 public:
     /// Constructor de la clase
-    bicola();
+    biqueue();
 
     /// Constructor de la copia
-    bicola(const bicola<T>& bc);
+    biqueue(const biqueue<T>& bc);
 
     /// Sobrecarga del operador asignacion
-    bicola<T>& operator =(const bicola<T>& bc);
+    biqueue<T>& operator =(const biqueue<T>& bc);
 
     /// Devuelve true si se encuentra vacia
     bool vacia() const;
 
-    /// Devuelve el valor del inicio
-    const T& return_inicio() const;
+    /// Devuelve el valor del start
+    const T& return_start() const;
 
-    /// Devuelve el valor del final
-    const T& return_final() const;
+    /// Devuelve el valor del end
+    const T& return_end() const;
 
-    /// Operacion pop en el inicio
-    void pop_inicio();
+    /// Operacion pop en el start
+    void pop_start();
 
-    /// Operacion pop en el final
-    void pop_final();
+    /// Operacion pop en el end
+    void pop_end();
 
     /// Operacion push desde el principio
-    void push_inicio(const T& elemento);
+    void push_start(const T& element);
 
-    /// Operacion push desde el final
-    void push_final(const T& elemento);
+    /// Operacion push desde el end
+    void push_end(const T& element);
 
     /// Destructor de la clase
-    ~bicola();
+    ~biqueue();
 };
 
 template <typename T>
-bicola<T>::bicola():
-    inicio(nullptr),
-    fin(nullptr)
+biqueue<T>::biqueue():
+    start(nullptr),
+    end(nullptr)
 {}
 
 template <typename T>
-void bicola<T>::copia(const bicola<T>& bc)
+void biqueue<T>::copia(const biqueue<T>& bc)
 {
-    /// Iniciamos los nodos de la nueva clase
-    inicio = fin = new nodo(bc.inicio->elemento);
-    nodo *p = bc.inicio->sig;
-    /// Mientras que exista un elemento anterior al que es en inicio,
-    /// fin debe actualizarse, por tanto, fin->sig apunta al siguiente elemento
-    /// y fin = fin->sig, asi tenemos el nuevo elemento en fin.
-    /// Recordemos que fin almacena el ultimo elemento introducido, por tanto,
-    /// por cada inicio->sig, quiere decir, que hay un elemento posteriormente 
+    /// Iniciamos los nodes de la nueva clase
+    start = end = new node(bc.start->element);
+    node *p = bc.start->next;
+    /// Mientras que exista un element anterior al que es en start,
+    /// end debe actualizarse, por tanto, end->next apunta al nextuiente element
+    /// y end = end->next, asi tenemos el nuevo element en end.
+    /// Recordemos que end almacena el ultimo element introducido, por tanto,
+    /// por cada start->next, quiere decir, que hay un element posteriormente 
     /// introducido.
     while(p)
     {
-        fin->sig = new nodo(p->elemento);
-        fin = fin->sig;
-        p = p->sig;
+        end->next = new node(p->element);
+        end = end->next;
+        p = p->next;
     }
 }
 
 template <typename T>
-bicola<T>::bicola(const bicola<T>& bc)
+biqueue<T>::biqueue(const biqueue<T>& bc)
 {
     cout << "Llamado al constructor de copia" << endl;  
 }
 
 template <typename T>
-bicola<T>& bicola<T>::operator =(const bicola<T>& bc)
+biqueue<T>& biqueue<T>::operator =(const biqueue<T>& bc)
 {
-    /// Evitamos la autoasignacion
+    /// Evitamos la autoanextnacion
     if (this != &bc)
     {
         /// Destruimos la clase actual
-        this->~bicola();
+        this->~biqueue();
         /// Llamamos a la funcion copia, pasamos 
         /// como parametro la clase a copiar
         copia(bc);
@@ -105,82 +105,82 @@ bicola<T>& bicola<T>::operator =(const bicola<T>& bc)
 }
 
 template <typename T>
-inline bool bicola<T>::vacia() const
+inline bool biqueue<T>::vacia() const
 {
-    return (inicio == nullptr);
+    return (start == nullptr);
 }
 
 template <typename T>
-void bicola<T>::push_inicio(const T& elemento)
+void biqueue<T>::push_start(const T& element)
 {
-    nodo *p = new nodo(elemento);
+    node *p = new node(element);
     if (vacia())
-        inicio = fin = p;
+        start = end = p;
     else
     {
-        inicio->sig = p;
-        inicio = inicio->sig;
+        start->next = p;
+        start = start->next;
     }
-    inicio->sig = fin;
+    start->next = end;
 }
 
 template <typename T>
-void bicola<T>::pop_inicio()
+void biqueue<T>::pop_start()
 {
     assert(!vacia());
-    nodo *p = inicio;
-    inicio = p->sig;
+    node *p = start;
+    start = p->next;
 
     delete p;
 }
 
 template <typename T>
-void bicola<T>::push_final(const T& elemento)
+void biqueue<T>::push_end(const T& element)
 {
-    nodo *p = new nodo(elemento);
+    node *p = new node(element);
     if (vacia())
-        inicio = fin = p;
+        start = end = p;
     else
     {
-        fin->sig = p;
-        fin = fin->sig;
+        end->next = p;
+        end = end->next;
     }
 }
 
 template <typename T>
-void bicola<T>::pop_final()
+void biqueue<T>::pop_end()
 {
-    nodo *p = inicio;
-    while (p->sig != fin) {
-        p = p->sig;
+    node *p = start;
+    while (p->next != end) {
+        p = p->next;
     }
-    delete fin;
-    fin = p;
+    delete end;
+    end = p;
 }
 
 template <typename T>
-const T& bicola<T>::return_inicio() const
+const T& biqueue<T>::return_start() const
 {
-    return inicio->elemento;
+    return start->element;
 }
 
 template <typename T>
-const T& bicola<T>::return_final() const
+const T& biqueue<T>::return_end() const
 {
-    return fin->elemento;
+    return end->element;
 }
 
 template <typename T>
-bicola<T>::~bicola()
+biqueue<T>::~biqueue()
 {
-    nodo *p;
-    while(inicio)
+    node *p;
+    while(start)
     {
-        p = inicio->sig;
-        delete inicio;
-        inicio = p;
+        p = start->next;
+        delete start;
+        start = p;
     }
-    fin = nullptr;
+    end = nullptr;
 }
 
 #endif

@@ -4,118 +4,118 @@
 #include <cassert>
 
 /*
- * TAD Pila con implementacion generica vectorial pseudoestatica
+ * TAD stack with generic pseudostatic vectorial implementation
  * 
- * Vector de tamano especificado por el usuario es el encargado de almacenar
- * los valores que se inserten en la pila
+ * Vector with fixed size specified by the user. The user is in charge of storing
+ * the values that will be inserting onto the stack.
  * 
  */
 
-template <typename tElemento>
-class Pila
+template <typename tElement>
+class stack
 {
 public:
 	/* Requiere pasar TamMax */
-	explicit Pila( size_t );
+	explicit stack( size_t );
 
-	Pila( const Pila& );
-	Pila& operator =( const Pila& );
+	stack( const stack& );
+	stack& operator =( const stack& );
 	/* Funciones observadoras */
-	bool vacia() const;
-	bool llena() const;
-	const tElemento& tope() const;
+	bool empty() const;
+	bool full() const;
+	const tElement& top() const;
 	
 	void pop();
-	void push( const tElemento& );
+	void push( const tElement& );
 
-	~Pila();
+	~stack();
 private:
-	/* Vector de elementos */
-	tElemento* elementos;
+	/* Vector de elements */
+	tElement* elements;
 	/* Tam del vector */
 	size_t Lmax;
-	/* Posicion del _tope */
-	int _tope;
+	/* Posicion del _top */
+	int _top;
 };
 
 template <typename T>
-Pila<T>::Pila( size_t TamMax ) :
+stack<T>::stack( size_t TamMax ) :
 	Lmax(TamMax),
-	_tope(-1),
-	elementos(new T[TamMax]) 
+	_top(-1),
+	elements(new T[TamMax]) 
 { }
 
 template <typename T>
-Pila<T>::Pila( const Pila& P ) :
-	elementos( new T[P.Lmax]),
+stack<T>::stack( const stack& P ) :
+	elements( new T[P.Lmax]),
 	Lmax( P.Lmax ),
-	_tope( P._tope )
+	_top( P._top )
 {
-	for( size_t i = 0; i < _tope; i++ )
+	for( size_t i = 0; i < _top; i++ )
 	{
-		elementos[i] = P.elementos[i];
+		elements[i] = P.elements[i];
 	}
 }
 
 template <typename T>
-Pila<T>& Pila<T>::operator =( const Pila<T>& P )
+stack<T>& stack<T>::operator =( const stack<T>& P )
 {
 	/* Evitamos autoasignacion */
 	if ( this != &P )
 	{
 		if ( Lmax != P.Lmax )
 		{
-			delete[] elementos;
+			delete[] elements;
 			Lmax = P.Lmax;
-			elementos = new T[Lmax];
+			elements = new T[Lmax];
 		}
-		_tope = P._tope;
-		for ( size_t i = 0; i < _tope; i++ )
+		_top = P._top;
+		for ( size_t i = 0; i < _top; i++ )
 		{
-			elementos[i] = P.elementos[i];
+			elements[i] = P.elements[i];
 		}
 	}
 	return *this;
 }
 
 template <typename T>
-inline bool Pila<T>::vacia() const
+inline bool stack<T>::empty() const
 {
-	return ( _tope == -1 );
+	return ( _top == -1 );
 }
 
 template <typename T>
-inline bool Pila<T>::llena() const
+inline bool stack<T>::full() const
 {
-	return ( _tope == Lmax - 1);
+	return ( _top == Lmax - 1);
 }
 
 template <typename T>
-inline const T& Pila<T>::tope() const
+inline const T& stack<T>::top() const
 {
-	assert( !vacia() );
-	return elementos[_tope];
+	assert( !empty() );
+	return elements[_top];
 }
 
 template <typename T>
-inline void Pila<T>::pop()
+inline void stack<T>::pop()
 {
-	assert( !vacia() );
-	--_tope;
+	assert( !empty() );
+	--_top;
 }
 
 template <typename T>
-inline void Pila<T>::push( const T& x )
+inline void stack<T>::push( const T& x )
 {
-	assert( !llena() );
-	++_tope;
-	elementos[_tope] = x;
+	assert( !full() );
+	++_top;
+	elements[_top] = x;
 }
 
 template <typename T>
-inline Pila<T>::~Pila()
+inline stack<T>::~stack()
 {
-	delete[] elementos; 
+	delete[] elements; 
 }
 
 #endif
