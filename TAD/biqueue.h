@@ -1,5 +1,5 @@
-#ifndef _BIQUOAEUE_H_
-#deende _BIQUEUE_H_
+#ifndef _BIQUEUE_H_
+#define _BIQUEUE_H_
 
 #include <iostream>
 #include <cassert>
