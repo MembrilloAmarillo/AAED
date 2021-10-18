@@ -1,7 +1,7 @@
-CC        = g++
-CXXFLAGS += -Wall -Wextra -pedantic
+CC        = clang++
+CXXFLAGS := -std=c++11 -Wall -Wextra -pedantic
 
-debug = 0
+debug 	 = 0
 optimiza = 0
 
 ifeq ($(debug),1)
@@ -20,10 +20,13 @@ OBJ    = test.o
 
 OUT = test
 
-${OUT} : ${OBJ}
-	${CC} -o ${OUT} ${CXXFLAGS} ${OBJ}
+all: ${OUT}
 
-test.o : algoritmos.h cronometro.h
+${OUT} : ${OBJ}
+	${CC} ${CXXFLAGS} -o ${OUT} $^
+
+test.o : test.cpp ${INC}
+	${CC} ${CXXFLAGS} -c -o test.o $<
 
 .PHONY: clean
 clean:

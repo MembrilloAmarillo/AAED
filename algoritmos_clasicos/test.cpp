@@ -14,6 +14,11 @@ double test_algoritmos(T inicio, T fin, uint8_t eleccion)
 	const double error_absoluto = 0.01; 
 	const double error_relativo = 0.001; // Error relativo aceptado
 
+	std::random_shuffle(inicio, fin);
+
+	void* copy = malloc( (fin - inicio) * sizeof(T) );
+	memcpy( copy, inicio, (fin - inicio) * sizeof(T) );
+
 	C.activar();
 
 	do
@@ -21,16 +26,16 @@ double test_algoritmos(T inicio, T fin, uint8_t eleccion)
 		switch (eleccion)
 		{
 		case 0:
-			std::random_shuffle(inicio, fin);
 			ordenacion_seleccion_directa(inicio, fin);
+			memcpy( inicio, copy, (fin - inicio) * sizeof(T) );
 			break;
 		case 1:
-			std::random_shuffle(inicio, fin);
 			ordenacion_intercambio_directo(inicio, fin);
+			memcpy( inicio, copy, (fin - inicio) * sizeof(T) );
 			break;
 		case 2:
-			std::random_shuffle(inicio, fin);
 			ordenacion_insercion_directa(inicio, fin);
+			memcpy( inicio, copy, (fin - inicio) * sizeof(T) );
 			break;
 		default:
 			break;
@@ -42,6 +47,7 @@ double test_algoritmos(T inicio, T fin, uint8_t eleccion)
 
 	/* Tiempo medio */
 	double t = C.tiempo() / r;
+	free(copy);
 
 	return t;
 }
@@ -101,6 +107,8 @@ int main( int argc, char **argv )
 	std::cout << t2			   << std::endl;
 	std::cout << "INTERCAMBIO" << std::endl;
 	std::cout << t3            << std::endl;
+
+	free( v2 );
 
 	return EXIT_SUCCESS;
 }
